@@ -1,0 +1,215 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name"
+		},
+		"AppSQLDB": {
+			"type": "string"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/07 - Validate App Data Ingestion')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Runs business logic to test if the ingested records were actual as expeced",
+				"activities": [
+					{
+						"name": "Validate Data for RunTime",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT TOP 1 DVIRID, DateCreated\nFROM dbo.[DVIR]\nWHERE DateCreated >= DATEADD(d, -1, GETUTCDATE())\nORDER BY DateCreated DESC",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00"
+							},
+							"dataset": {
+								"referenceName": "D_SQL_DVIR",
+								"type": "DatasetReference"
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "If App SQL Has Records From Yesterday",
+						"description": "Validates data exists and then run the pipeline",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Validate Data for RunTime",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@greaterOrEquals(activity('Validate Data for RunTime').output.count, 1)",
+								"type": "Expression"
+							},
+							"ifFalseActivities": [
+								{
+									"name": "Send Email",
+									"type": "WebActivity",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"url": "https://prod-17.australiaeast.logic.azure.com:443/workflows/c3f8dec1f7874947be99e5a6687fd44a/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=3hmI6qI8u6aF7WQyirhxa9kLKXJGiVgI5IqFG-YYc6w",
+										"method": "POST",
+										"headers": {
+											"Content-Type": "application/json"
+										},
+										"body": {
+											"value": "{\n   \"DataFactoryName\": \"@{pipeline().DataFactory}\",\n   \"PipelineName\": \"@{pipeline().Pipeline}\",\n   \"Subject\": \"Triagebot: No new DVIRs found in last 24 hours\",\n   \"ErrorMessage\": \"TriageBot triggered the ingestion process at @{pipeline().parameters.runDateUtc} UTC for PipelineId @{pipeline().RunId} and no new DVIRs were found in the last 24 hours - this may be a bug and need investigation\",\n   \"EmailTo\": \"Rodney.joyce@communities.wa.gov.au\"\n}\t",
+											"type": "Expression"
+										},
+										"linkedServices": [],
+										"datasets": []
+									}
+								}
+							]
+						}
+					}
+				],
+				"parameters": {
+					"runDateUtc": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "App Storage"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/D_SQL_DVIR')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/D_SQL_DVIR')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AppSQLDB')]",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "SQL"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "DVIRID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Name",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CountOfCRAMFRed",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "CountOfCRAMFAmber",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "CountOfCRAMFYellow",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "DateCreated",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "IncidentStartTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "IncidentEndTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "StatusId",
+						"type": "tinyint",
+						"precision": 3
+					},
+					{
+						"name": "TempKeyId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "IncidentStatus",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Summary",
+						"type": "nvarchar"
+					},
+					{
+						"name": "SummaryClean",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Category",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CategoryId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "District",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "DVIR"
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
