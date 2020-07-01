@@ -1,0 +1,11 @@
+{
+	"name": "adf",
+	"properties": {
+		"description": "adf",
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://adfkv20200701.vault.azure.net/"
+		}
+	}
+}
