@@ -231,13 +231,16 @@
 					"batchCount": 20,
 					"activities": [
 						{
-							"name": "Set variable1",
-							"type": "SetVariable",
+							"name": "Execute Pipeline1",
+							"type": "ExecutePipeline",
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "test",
-								"value": "1"
+								"pipeline": {
+									"referenceName": "MoveFiles",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
 							}
 						}
 					]
