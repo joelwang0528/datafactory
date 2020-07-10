@@ -1,5 +1,5 @@
 {
-	"name": "MoveFiles_loop",
+	"name": "MoveFiles_A",
 	"properties": {
 		"description": "Move files from one folder to another folder",
 		"activities": [
