@@ -240,7 +240,25 @@
 									"referenceName": "MoveFiles",
 									"type": "PipelineReference"
 								},
-								"waitOnCompletion": true
+								"waitOnCompletion": true,
+								"parameters": {
+									"SourceStore_Location": {
+										"value": "@pipeline().parameters.SourceStore_Location",
+										"type": "Expression"
+									},
+									"SourceStore_Directory": {
+										"value": "concat(concat(@pipeline().parameters.SourceStore_Directory,'/')@item().name)",
+										"type": "Expression"
+									},
+									"DestinationStore_Location": {
+										"value": "@pipeline().parameters.DestinationStore_Location",
+										"type": "Expression"
+									},
+									"DestinationStore_Directory": {
+										"value": "concat(concat(@pipeline().parameters.DestinationStore_Directory,'/')@item().name)",
+										"type": "Expression"
+									}
+								}
 							}
 						}
 					]
