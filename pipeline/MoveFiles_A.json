@@ -237,7 +237,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "MoveFiles",
+									"referenceName": "MoveFiles_B",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,
