@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "MyTestFactory20200101"
+		},
+		"AzureSqlDatabase1_connectionString": {
+			"value": ""
+		},
+		"blob storage_connectionString": {
+			"value": ""
+		},
+		"datalake_accountKey": {
+			"value": ""
+		},
+		"adf_properties_typeProperties_baseUrl": {
+			"value": "https://adfkv20200701.vault.azure.net/"
+		},
+		"datalake_properties_typeProperties_url": {
+			"value": "https://nswtransportdata.dfs.core.windows.net"
+		},
+		"trigger_every_30_sec_properties_pipeline_parameters_FolderPath_Source": {
+			"value": "siri"
+		},
+		"trigger_every_30_sec_properties_pipeline_parameters_Directory_Source": {
+			"value": "consumer"
+		},
+		"trigger_every_30_sec_properties_pipeline_parameters_FolderPath_Destination": {
+			"value": "nswtransportdata"
+		},
+		"trigger_every_30_sec_properties_pipeline_parameters_Directory_Destination": {
+			"value": "raw/PTMS"
+		},
+		"trigger_every_30_sec_properties_pipeline_parameters_LastModified_From": {
+			"value": "@trigger().outputs.windowStartTime"
+		},
+		"trigger_every_30_sec_properties_pipeline_parameters_LastModified_To": {
+			"value": "@trigger().outputs.windowEndTime"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
