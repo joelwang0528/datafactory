@@ -9,6 +9,10 @@
 				"type": "PipelineReference"
 			},
 			"parameters": {
+				"FolderPath_Source": "siri",
+				"Directory_Source": "consumer",
+				"FolderPath_Destination": "nswtransportdata",
+				"Directory_Destination": "raw/PTMS",
 				"LastModified_From": "@trigger().outputs.windowStartTime",
 				"LastModified_To": "@trigger().outputs.windowEndTime"
 			}
