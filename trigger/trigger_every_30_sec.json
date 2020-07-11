@@ -1,0 +1,29 @@
+{
+	"name": "trigger_every_30_sec",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipeline": {
+			"pipelineReference": {
+				"referenceName": "CopyNewFilesByLastModifiedDate",
+				"type": "PipelineReference"
+			},
+			"parameters": {
+				"LastModified_From": "@trigger().outputs.windowStartTime",
+				"LastModified_To": "@trigger().outputs.windowEndTime"
+			}
+		},
+		"type": "TumblingWindowTrigger",
+		"typeProperties": {
+			"frequency": "Minute",
+			"interval": 5,
+			"startTime": "2020-07-11T01:04:00.000Z",
+			"delay": "00:00:00",
+			"maxConcurrency": 50,
+			"retryPolicy": {
+				"intervalInSeconds": 30
+			},
+			"dependsOn": []
+		}
+	}
+}
