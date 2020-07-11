@@ -34,7 +34,7 @@
 								"value": "*",
 								"type": "Expression"
 							},
-							"deleteFilesAfterCompletion": true
+							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
 							"type": "BinaryReadSettings"
