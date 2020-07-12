@@ -89,8 +89,7 @@
 				"defaultValue": "siri"
 			},
 			"Directory_Source": {
-				"type": "String",
-				"defaultValue": "/"
+				"type": "String"
 			},
 			"FolderPath_Destination": {
 				"type": "String",
