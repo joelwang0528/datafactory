@@ -90,7 +90,7 @@
 			},
 			"Directory_Source": {
 				"type": "String",
-				"defaultValue": "consumer"
+				"defaultValue": "/"
 			},
 			"FolderPath_Destination": {
 				"type": "String",
@@ -98,7 +98,7 @@
 			},
 			"Directory_Destination": {
 				"type": "String",
-				"defaultValue": "raw"
+				"defaultValue": "raw/siri"
 			},
 			"LastModified_From": {
 				"type": "String",
