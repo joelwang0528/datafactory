@@ -89,7 +89,8 @@
 				"defaultValue": "siri"
 			},
 			"Directory_Source": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "/"
 			},
 			"FolderPath_Destination": {
 				"type": "String",
@@ -105,7 +106,7 @@
 			},
 			"LastModified_To": {
 				"type": "String",
-				"defaultValue": "2020-07-11T00:00:00Z"
+				"defaultValue": "2020-07-20T00:00:00Z"
 			}
 		},
 		"annotations": []
