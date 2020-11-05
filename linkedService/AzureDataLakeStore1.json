@@ -1,0 +1,13 @@
+{
+	"name": "AzureDataLakeStore1",
+	"properties": {
+		"annotations": [],
+		"type": "AzureDataLakeStore",
+		"typeProperties": {
+			"dataLakeStoreUri": "https://dlsgen12345.azuredatalakestore.net/webhdfs/v1",
+			"tenant": "cc8fd323-84b8-4b23-9fb0-be33707a90c9",
+			"subscriptionId": "200659ce-215d-4e24-9eb5-d2b658f0eef9",
+			"resourceGroupName": "mslearn-datalake-test"
+		}
+	}
+}
